@@ -1,0 +1,8 @@
+{
+  "password": "secreet",
+  "session_duration": 7200,
+  "log_path": "/var/log/edukey.log",
+  "cpu_thread_multiplier": 8,
+  "unicode_size": 20000000,
+  "enable_encryption": true
+}
