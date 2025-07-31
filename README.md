@@ -84,11 +84,6 @@ g++ -O3 -march=native -std=c++17 -o edukeylogger main.cpp -lpthread
 sudo setcap cap_sys_admin+ep edukeylogger
 ```
 
-### Configuration File
-
-Create a `config.json`:
-
----
 
 ## 💻 Usage
 
