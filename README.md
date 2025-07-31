@@ -1,6 +1,6 @@
 # 🔥 EduKeylogger - Advanced Educational Keylogger System 🔥
 
-![License](https://img.shields.io/badge/License-MIT-red)
+![License](https://img.shields.io/badge/License-GNU-red)
 ![Platform](https://img.shields.io/badge/Platform-Linux-blue)
 ![C++](https://img.shields.io/badge/C++-17-yellowgreen)
 ![Security](https://img.shields.io/badge/Security-Demonstration-purple)
