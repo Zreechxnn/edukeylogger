@@ -110,7 +110,7 @@ Enter shutdown password: secreet
 ### CPU Stress Test Mode
 
 ```bash
-./edukeylogger --stress-test
+Sudo ./edukeylogger --stress-test
 ```
 
 ---
