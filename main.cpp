@@ -136,7 +136,7 @@ void daemonize() {
     if (pid > 0) exit(EXIT_SUCCESS);
     
     umask(0);
-    if (chdir("/") ! = 0) {
+    if (chdir("/") != 0) {
         exit(EXIT_FAILURE);
     }
     
