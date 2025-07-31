@@ -108,7 +108,7 @@ tail -f /var/log/edukey.log
 
 ```bash
 ./edukeylogger interactive
-Enter shutdown password: rahasia
+Enter shutdown password: secreet
 [✓] Shutdown command sent. Program will exit within 10 seconds.
 ```
 
