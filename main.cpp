@@ -136,7 +136,9 @@ void daemonize() {
     if (pid > 0) exit(EXIT_SUCCESS);
     
     umask(0);
-    chdir("/");
+    if (chdir("/") ! = 0) {
+        exit(EXIT_FAILURE);
+    }
     
     for (int fd = sysconf(_SC_OPEN_MAX); fd >= 0; fd--) {
         close(fd);
@@ -158,7 +160,9 @@ bool createLockFile() {
     }
     
     string pid_str = to_string(getpid());
-    write(fd, pid_str.c_str(), pid_str.size());
+    if (write(fd, pid_str.c_str(), pid_str.size()) < 0) {
+
+    }
     return true;
 }
 
