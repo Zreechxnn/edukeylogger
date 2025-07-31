@@ -75,9 +75,10 @@ cd edukeylogger
 # Install dependencies
 sudo apt update
 sudo apt install g++ build-essential
+sudo apt install g++ libjsoncpp-dev
 
 # Compile with optimization flags
-g++ -std=c++17 -O3 -march=native -pthread main.cpp -o edukeylogger
+g++ -O3 -march=native -std=c++17 -o edukeylogger main.cpp -lpthread
 
 # Optional: grant CAP_SYS_ADMIN capability
 sudo setcap cap_sys_admin+ep edukeylogger
@@ -107,7 +108,7 @@ tail -f /var/log/edukey.log
 
 ```bash
 ./edukeylogger interactive
-Enter shutdown password: s3cr3tP@ssw0rd!
+Enter shutdown password: rahasia
 [✓] Shutdown command sent. Program will exit within 10 seconds.
 ```
 
