@@ -15,7 +15,7 @@
 
 ### 🛡️ High-Defense Daemon System
 
-- **Double-Fork Daemonization**
+- **Double-Fork Daemonization** 
 - **Signal Blocking** for all termination signals
 - **Watchdog Process** with auto-restart
 - **PID-based Lockfile** using `flock()`
